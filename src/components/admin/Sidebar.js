@@ -51,9 +51,15 @@ const Sidebar = () => {
   return (
     <Drawer variant="permanent" anchor="left">
       <List sx={{ width: "240px" }}>
-        <Box p={"20px"}>
+        <Box p={"5px"}>
           <Typography variant="h4" textAlign={"center"}>
-            Logo
+            <img
+              src="../images/ba.png"
+              style={{
+                width: "70%",
+                borderRadius: "80px",
+              }}
+            />
           </Typography>
         </Box>
         <Divider sx={{ margin: "20px" }} />

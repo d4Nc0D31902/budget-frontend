@@ -72,7 +72,15 @@ function App() {
     <div className="App">
       <Header />
       <Routes>
-        <Route path="/" element={<Dashboard />} exact="true" />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+          exact="true"
+        />
         <Route path="/product/:id" element={<ProductDetails />} exact="true" />
         <Route path="/search/:keyword" element={<Home />} exact="true" />
         <Route path="/login" element={<Login />} exact="true" />

@@ -69,6 +69,13 @@ const NewTransaction = () => {
     { value: "Utilities", label: "Utilities" },
     { value: "Groceries", label: "Groceries" },
     { value: "Food", label: "Food" },
+    { value: "Toys", label: "Toys" },
+    { value: "Loans", label: "Loans" },
+    { value: "Family", label: "Family" },
+    { value: "Bills", label: "Bills" },
+    { value: "Tax", label: "Tax" },
+    { value: "Transportation", label: "Transportation" },
+    { value: "Others", label: "Others" },
   ];
 
   return (

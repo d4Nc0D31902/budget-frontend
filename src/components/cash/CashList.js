@@ -69,7 +69,9 @@ const CashList = () => {
         data.rows.push({
           id: cash._id,
           description: cash.description,
-          amount: `₱${cash.amount}`,
+          amount: `₱${cash.amount
+            .toFixed(2)
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
           date: new Date(cash.date).toLocaleDateString(),
           // date: cash.date,
           actions: (

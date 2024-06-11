@@ -65,7 +65,9 @@ const AtmList = () => {
         data.rows.push({
           id: atm._id,
           description: atm.description,
-          amount: `₱${atm.amount}`,
+          amount: `₱${atm.amount
+            .toFixed(2)
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
           date: new Date(atm.date).toLocaleDateString(),
           actions: (
             <Fragment>

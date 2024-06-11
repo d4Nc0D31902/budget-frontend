@@ -34,6 +34,14 @@ const Dashboard = () => {
     (state) => state.totalExpenses
   );
 
+  // Calculate the total balance
+  const totalBalance = (totalAmount ?? 0) + (totalAtm ?? 0);
+
+  // Format the total balance with commas and two decimal places
+  const formattedTotalBalance = totalBalance
+    .toFixed(2)
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   useEffect(() => {
     dispatch(getTotalCashAmount());
     dispatch(getTotalSavings());
@@ -52,19 +60,19 @@ const Dashboard = () => {
           <Sidebar />
         </div>
         <div className="col-12 col-md-10">
-          <h1 className="my-4">Dashboard</h1>
+          <h1 className="my-4">Analytics</h1>
           {loading ? (
             <Loader />
           ) : (
             <Fragment>
-              <MetaData title={"Admin Dashboard"} />
+              <MetaData title={"Analytics"} />
               <div className="row pr-4">
                 <div className="col-xl-12 col-sm-12 mb-3">
                   <div className="card text-white bg-success o-hidden h-100">
                     <div className="card-body">
                       <div className="text-center card-font-size">
                         Total Savings
-                        <br />{" "}
+                        <br />
                         <b>
                           ₱
                           {totalSavings &&
@@ -72,6 +80,19 @@ const Dashboard = () => {
                               .toFixed(2)
                               .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                         </b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row pr-4">
+                <div className="col-xl-12 col-sm-12 mb-3">
+                  <div className="card text-white bg-primary o-hidden h-100">
+                    <div className="card-body">
+                      <div className="text-center card-font-size">
+                        Total Balance
+                        <br />
+                        <b>₱{formattedTotalBalance}</b>
                       </div>
                     </div>
                   </div>
@@ -137,7 +158,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="col-xl-3 col-sm-6 mb-3">
-                  <div className="card text-white bg-primary o-hidden h-100">
+                  <div className="card text-white bg-success o-hidden h-100">
                     <div className="card-body">
                       <div className="text-center card-font-size">
                         Total Income

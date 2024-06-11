@@ -6,51 +6,87 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { useEffect, useState } from "react";
 
-export default function ExpensesChart({ data }) {
-  const pieColors = [
-    "#A91D3A",
-    "#151515",
-    "#C73659",
-    "#EEEEEE",
-    "#00B3E6",
-    "#E6B333",
-    "#3366E6",
-    "#999966",
-    "#809980",
-    "#E6FF80",
-    "#1AFF33",
-    "#999933",
-    "#FF3380",
-    "#CCCC00",
-    "#66E64D",
-    "#4D80CC",
-    "#FF4D4D",
-    "#99E6E6",
-    "#6666FF",
-  ];
+export default function ProductSalesChart({ data }) {
+  const [processedData, setProcessedData] = useState([]);
 
-  // Extracting only the description field from data
-  const expensesData = data.map((expense) => ({
-    name: expense.description,
-    percent: expense.amount,
-  }));
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const dataMap = new Map();
+
+      data.forEach((item) => {
+        const existing = dataMap.get(item.description);
+        if (existing) {
+          dataMap.set(item.description, {
+            description: item.description,
+            amount: existing.amount + item.amount,
+          });
+        } else {
+          dataMap.set(item.description, { ...item });
+        }
+      });
+
+      const aggregatedData = Array.from(dataMap.values());
+
+      const totalAmount = aggregatedData.reduce(
+        (sum, item) => sum + item.amount,
+        0
+      );
+
+      const calculatedData = aggregatedData.map((item) => ({
+        ...item,
+        percent: ((item.amount / totalAmount) * 100).toFixed(2),
+      }));
+
+      setProcessedData(calculatedData);
+    }
+  }, [data]);
+
+  const pieColors = ["#78ABA8", "#C8CFA0", "#FCDC94", "#EF9C66", "#95D2B3"];
+
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    index,
+  }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? "start" : "end"}
+        dominantBaseline="central"
+      >
+        {`${processedData[index].percent}%`}
+      </text>
+    );
+  };
 
   return (
     <ResponsiveContainer width="90%" height={1000}>
       <PieChart width={1000} height={1000}>
         <Pie
-          data={expensesData}
-          dataKey="percent"
-          nameKey="name"
+          dataKey="amount"
+          nameKey="description"
           isAnimationActive={true}
+          data={processedData}
           cx="50%"
           cy="50%"
           outerRadius={300}
           fill="#8884d8"
-          label
+          label={renderCustomizedLabel}
+          labelLine={false}
         >
-          {expensesData.map((entry, index) => (
+          {processedData.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
               fill={pieColors[index % pieColors.length]}

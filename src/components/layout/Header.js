@@ -45,11 +45,11 @@ const Header = () => {
       sx={{ width: "85%", marginLeft: "auto" }}
     >
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <Link to="/" style={{ textDecoration: "none", color: "white" }}>
             Budget App
           </Link>
-        </Typography>
+        </Typography> */}
         <Box sx={{ flexGrow: 1 }} />
         {user ? (
           <div>

@@ -71,7 +71,9 @@ const IncomeList = () => {
         data.rows.push({
           id: income._id,
           description: income.description,
-          amount: `₱${income.amount}`,
+          amount: `₱${income.amount
+            .toFixed(2)
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
           date: new Date(income.date).toLocaleDateString(),
           actions: (
             <Fragment>
