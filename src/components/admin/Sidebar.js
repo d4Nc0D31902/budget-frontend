@@ -16,6 +16,7 @@ import AddIcon from "@mui/icons-material/Add";
 import PaidIcon from "@mui/icons-material/Paid";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import PieChartIcon from '@mui/icons-material/PieChart';
 import {
   Box,
   Collapse,
@@ -65,7 +66,7 @@ const Sidebar = () => {
         <Divider sx={{ margin: "20px" }} />
         <ListItemButton component={Link} to="/" selected={isActive("/")}>
           <ListItemIcon>
-            <DashboardIcon />
+            <PieChartIcon />
           </ListItemIcon>
           <ListItemText primary="Analytics" />
         </ListItemButton>

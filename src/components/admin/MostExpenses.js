@@ -43,7 +43,23 @@ export default function ProductSalesChart({ data }) {
     }
   }, [data]);
 
-  const pieColors = ["#78ABA8", "#C8CFA0", "#FCDC94", "#EF9C66", "#95D2B3"];
+  const pieColors = [
+    "#78ABA8",
+    "#C8CFA0",
+    "#FCDC94",
+    "#EF9C66",
+    "#95D2B3",
+    "#A5DD9B",
+    "#F6F193",
+    "#C5EBAA",
+    "#F2C18D",
+    "#B4B4B8",
+    "#C7C8CC",
+    "#F5EEE6",
+    "#F3D7CA",
+    "#FF90BC",
+    "#8ACDD7",
+  ];
 
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
