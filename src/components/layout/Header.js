@@ -39,11 +39,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar
-      position="sticky"
-      color="success"
-      sx={{ width: "85%", marginLeft: "auto" }}
-    >
+    <AppBar position="sticky" color="success">
       <Toolbar>
         {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <Link to="/" style={{ textDecoration: "none", color: "white" }}>
