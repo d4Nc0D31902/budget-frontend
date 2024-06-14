@@ -98,14 +98,14 @@ const AtmList = () => {
 
   return (
     <Fragment>
-      <MetaData title={"All ATMs"} />
+      <MetaData title={"Card List"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
         </div>
         <div className="col-12 col-md-10">
           <Fragment>
-            <h1 className="my-5">All ATMs</h1>
+            <h1 className="my-5">Card List</h1>
             {loading ? (
               <Loader />
             ) : (

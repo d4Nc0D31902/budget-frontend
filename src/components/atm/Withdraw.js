@@ -23,8 +23,10 @@ const WithdrawForm = () => {
 
   useEffect(() => {
     if (error) {
+      toast.error(error);
       dispatch(clearErrors());
     }
+
     if (success) {
       navigate("/atm-list");
       message("Withdrawal successful");
@@ -34,7 +36,11 @@ const WithdrawForm = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(withdrawMoney(amount));
+    if (amount > 0) {
+      dispatch(withdrawMoney(amount));
+    } else {
+      toast.error("Enter a valid amount");
+    }
   };
 
   return (
@@ -61,7 +67,7 @@ const WithdrawForm = () => {
                     id="amount_field"
                     className="form-control"
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={(e) => setAmount(Number(e.target.value))}
                   />
                 </div>
 

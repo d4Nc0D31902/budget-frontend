@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -16,7 +16,9 @@ import AddIcon from "@mui/icons-material/Add";
 import PaidIcon from "@mui/icons-material/Paid";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import PieChartIcon from '@mui/icons-material/PieChart';
+import PieChartIcon from "@mui/icons-material/PieChart";
+import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
+import axios from "axios";
 import {
   Box,
   Collapse,
@@ -31,6 +33,8 @@ const Sidebar = () => {
   const [open, setOpen] = useState(false);
   const [atmOpen, setAtmOpen] = useState(false);
   const [transactionOpen, setTransactionOpen] = useState(false);
+  const [cashCount, setCashCount] = useState(0);
+  const [atmCount, setAtmCount] = useState(0);
   const location = useLocation();
 
   const handleCollapse = () => {
@@ -47,6 +51,42 @@ const Sidebar = () => {
 
   const isActive = (path) => {
     return location.pathname === path;
+  };
+
+  useEffect(() => {
+    fetchCashCount();
+  }, []);
+
+  useEffect(() => {
+    fetchAtmCount();
+  }, []);
+
+  const fetchCashCount = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/cash-count`,
+        {
+          withCredentials: true,
+        }
+      );
+      setCashCount(response.data.count);
+    } catch (error) {
+      console.error("Error fetching cash count:", error);
+    }
+  };
+
+  const fetchAtmCount = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/atm-count`,
+        {
+          withCredentials: true,
+        }
+      );
+      setAtmCount(response.data.count);
+    } catch (error) {
+      console.error("Error fetching atm count:", error);
+    }
   };
 
   return (
@@ -99,6 +139,7 @@ const Sidebar = () => {
               to="/cash/new"
               selected={isActive("/cash/new")}
               sx={{ marginLeft: "20px" }}
+              disabled={cashCount > 0}
             >
               <ListItemIcon>
                 <AddIcon />
@@ -136,6 +177,7 @@ const Sidebar = () => {
               to="/atm/new"
               selected={isActive("/atm/new")}
               sx={{ marginLeft: "20px" }}
+              disabled={atmCount > 0}
             >
               <ListItemIcon>
                 <AddIcon />
@@ -220,9 +262,9 @@ const Sidebar = () => {
               sx={{ marginLeft: "20px" }}
             >
               <ListItemIcon>
-                <AddIcon />
+                <ReceiptLongRoundedIcon />
               </ListItemIcon>
-              <ListItemText primary="Add" />
+              <ListItemText primary="Transact" />
             </ListItemButton>
           </List>
         </Collapse>

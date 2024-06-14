@@ -35,12 +35,14 @@ const AddCash = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const amountNumber = parseFloat(amount);
-    dispatch(addCashAmount(id, amountNumber));
-    if (success) {
+    try {
+      const amountNumber = parseFloat(amount);
+      dispatch(addCashAmount(id, amountNumber));
       successMsg("Cash added successfully!");
       dispatch({ type: ADD_CASH_RESET });
       navigate("/cash-list");
+    } catch (error) {
+      console.error("Error adding cash:", error);
     }
   };
 
