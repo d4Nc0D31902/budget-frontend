@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addAtmAmount } from "../../actions/atmActions";
+import { addAtmAmount, getAdminAtm } from "../../actions/atmActions";
 import { ADD_ATM_RESET } from "../../constants/atmConstants";
 
 const AddATMAmount = () => {
@@ -29,10 +29,16 @@ const AddATMAmount = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const amountNumber = parseFloat(amount);
-    dispatch(addAtmAmount(id, amountNumber));
-    navigate("/atm-list");
-    successMsg("Amount added successfully!");
+    try {
+      const amountNumber = parseFloat(amount);
+      await dispatch(addAtmAmount(id, amountNumber));
+      navigate("/atm-list");
+      dispatch(getAdminAtm());
+      successMsg("Amount added successfully!");
+    } catch (error) {
+      console.error("Error adding amount:", error);
+      errMsg("Failed to add the amount. Please try again.");
+    }
   };
 
   return (

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   processTransaction,
   clearErrors,
+  getAllTransactions,
 } from "../../actions/transactionActions";
 import { PROCESS_TRANSACTION_RESET } from "../../constants/transactionConstants";
 
@@ -23,32 +24,49 @@ const NewTransaction = () => {
     (state) => state.processTransaction
   );
 
+  const errMsg = (message = "") =>
+    toast.error(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
+
+  const successMsg = (message = "") =>
+    toast.success(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
+
   const message = (message = "") =>
     toast.success(message, {
       position: toast.POSITION.BOTTOM_CENTER,
     });
 
-  useEffect(() => {
-    if (error) {
-      dispatch(clearErrors());
-    }
-    if (success) {
-      navigate("/transaction-list");
-      message("Transaction created successfully");
-      dispatch({ type: PROCESS_TRANSACTION_RESET });
-    }
-  }, [dispatch, error, success, navigate]);
+  // useEffect(() => {
+  //   if (error) {
+  //     dispatch(clearErrors());
+  //   }
+  //   if (success) {
+  //     navigate("/transaction-list");
+  //     message("Transaction created successfully");
+  //     dispatch({ type: PROCESS_TRANSACTION_RESET });
+  //   }
+  // }, [dispatch, error, success, navigate]);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    const transactionData = {
-      account,
-      amount,
-      category,
-      notes,
-      date,
-    };
-    dispatch(processTransaction(transactionData));
+    try {
+      const transactionData = {
+        account,
+        amount,
+        category,
+        notes,
+        date,
+      };
+      await dispatch(processTransaction(transactionData));
+      navigate("/transaction-list");
+      dispatch(getAllTransactions());
+      successMsg("Transaction Deleted Successfully");
+    } catch (error) {
+      errMsg("Error Deleting Transaction!");
+    }
   };
 
   const accountOptions = [

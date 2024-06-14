@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { MDBDataTable } from "mdbreact";
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "../admin/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -17,6 +19,17 @@ import { DELETE_TRANSACTION_RESET } from "../../constants/transactionConstants";
 const TransactionList = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
+
+  const errMsg = (message = "") =>
+    toast.error(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
+
+  const successMsg = (message = "") =>
+    toast.success(message, {
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
+
   const { loading, error, transactions } = useSelector(
     (state) => state.allTransactions
   );
@@ -105,8 +118,14 @@ const TransactionList = () => {
     return data;
   };
 
-  const deleteTransactionHandler = (id) => {
-    dispatch(deleteTransaction(id));
+  const deleteTransactionHandler = async (id) => {
+    try {
+      await dispatch(deleteTransaction(id));
+      dispatch(getAllTransactions());
+      successMsg("Transaction Deleted Successfully");
+    } catch (error) {
+      errMsg("Error Deleting Transaction!");
+    }
   };
 
   return (

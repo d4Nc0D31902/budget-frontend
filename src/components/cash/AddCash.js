@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   addCashAmount,
+  getAdminCash,
   getCashDetails,
   clearErrors,
 } from "../../actions/cashActions";
@@ -38,9 +39,9 @@ const AddCash = () => {
     try {
       const amountNumber = parseFloat(amount);
       dispatch(addCashAmount(id, amountNumber));
-      successMsg("Cash added successfully!");
-      dispatch({ type: ADD_CASH_RESET });
       navigate("/cash-list");
+      dispatch(getAdminCash());
+      successMsg("Cash added successfully!");
     } catch (error) {
       console.error("Error adding cash:", error);
     }

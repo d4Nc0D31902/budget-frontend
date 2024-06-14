@@ -5,7 +5,11 @@ import Sidebar from "../admin/Sidebar";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { withdrawMoney, clearErrors } from "../../actions/atmActions";
+import {
+  withdrawMoney,
+  clearErrors,
+  getAdminAtm,
+} from "../../actions/atmActions";
 import { WITHDRAW_ATM_RESET } from "../../constants/atmConstants";
 
 const WithdrawForm = () => {
@@ -21,23 +25,30 @@ const WithdrawForm = () => {
       position: toast.POSITION.BOTTOM_CENTER,
     });
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-      dispatch(clearErrors());
-    }
+  // useEffect(() => {
+  //   if (error) {
+  //     toast.error(error);
+  //     dispatch(clearErrors());
+  //   }
 
-    if (success) {
-      navigate("/atm-list");
-      message("Withdrawal successful");
-      dispatch({ type: WITHDRAW_ATM_RESET });
-    }
-  }, [dispatch, error, success, navigate]);
+  //   if (success) {
+  //     navigate("/atm-list");
+  //     message("Withdrawal successful");
+  //     dispatch({ type: WITHDRAW_ATM_RESET });
+  //   }
+  // }, [dispatch, error, success, navigate]);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (amount > 0) {
-      dispatch(withdrawMoney(amount));
+      try {
+        await dispatch(withdrawMoney(amount));
+        navigate("/atm-list");
+        dispatch(getAdminAtm());
+        message("Withdrawal successful");
+      } catch (error) {
+        toast.error("Failed to withdraw money. Please try again.");
+      }
     } else {
       toast.error("Enter a valid amount");
     }
