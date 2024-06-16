@@ -11,6 +11,19 @@ import {
   getAllTransactions,
 } from "../../actions/transactionActions";
 import { PROCESS_TRANSACTION_RESET } from "../../constants/transactionConstants";
+import {
+  Box,
+  Typography,
+  Grid,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Button,
+  TextareaAutosize,
+  Paper,
+} from "@mui/material";
 
 const NewTransaction = () => {
   const [account, setAccount] = useState("");
@@ -38,17 +51,6 @@ const NewTransaction = () => {
     toast.success(message, {
       position: toast.POSITION.BOTTOM_CENTER,
     });
-
-  // useEffect(() => {
-  //   if (error) {
-  //     dispatch(clearErrors());
-  //   }
-  //   if (success) {
-  //     navigate("/transaction-list");
-  //     message("Transaction created successfully");
-  //     dispatch({ type: PROCESS_TRANSACTION_RESET });
-  //   }
-  // }, [dispatch, error, success, navigate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -99,99 +101,120 @@ const NewTransaction = () => {
   return (
     <Fragment>
       <MetaData title={"New Transaction"} />
-      <div className="row">
-        <div className="col-12 col-md-2">
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={2}>
           <Sidebar />
-        </div>
+        </Grid>
 
-        <div className="col-12 col-md-10">
-          <Fragment>
-            <div className="wrapper my-5">
-              <form className="shadow-lg" onSubmit={submitHandler}>
-                <h1 className="mb-4">New Transaction</h1>
-
-                <div className="form-group">
-                  <label htmlFor="account_field">Account</label>
-                  <select
-                    id="account_field"
-                    className="form-control"
-                    value={account}
-                    onChange={(e) => setAccount(e.target.value)}
-                  >
-                    {accountOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="amount_field">Amount</label>
-                  <input
-                    type="number"
+        <Grid item xs={12} md={10}>
+          <Box
+            component={Paper}
+            elevation={3}
+            sx={{
+              mt: 5,
+              p: 4,
+              borderRadius: "16px",
+              mx: 2,
+              backgroundColor: "#fff",
+            }}
+          >
+            <Typography variant="h4" component="h1" gutterBottom>
+              New Transaction
+            </Typography>
+            <form onSubmit={submitHandler}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="account_field">Account</InputLabel>
+                    <Select
+                      value={account}
+                      onChange={(e) => setAccount(e.target.value)}
+                      label="Account"
+                      fullWidth
+                    >
+                      {accountOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
                     id="amount_field"
-                    className="form-control"
+                    label="Amount"
+                    type="number"
+                    fullWidth
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
+                    variant="outlined"
+                    required
                   />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="category_field">Category</label>
-                  <select
-                    id="category_field"
-                    className="form-control"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                  >
-                    {categoryOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="notes_field">Notes</label>
-                  {category === "Expenses" ? (
-                    <select
-                      id="notes_field"
-                      className="form-control"
-                      value={notes}
-                      onChange={(e) => setNotes(e.target.value)}
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="category_field">Category</InputLabel>
+                    <Select
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      label="Category"
+                      fullWidth
                     >
-                      {expenseNotesOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
+                      {categoryOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
                           {option.label}
-                        </option>
+                        </MenuItem>
                       ))}
-                    </select>
-                  ) : (
-                    <textarea
-                      className="form-control"
-                      id="notes_field"
-                      rows="4"
-                      value={notes}
-                      onChange={(e) => setNotes(e.target.value)}
-                    ></textarea>
-                  )}
-                </div>
-
-                <button
-                  id="login_button"
-                  type="submit"
-                  className="btn btn-block py-3"
-                  disabled={loading ? true : false}
-                >
-                  CREATE
-                </button>
-              </form>
-            </div>
-          </Fragment>
-        </div>
-      </div>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    {/* <InputLabel htmlFor="notes_field">Notes</InputLabel> */}
+                    {category === "Expenses" ? (
+                      <Select
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        // label="Notes"
+                        fullWidth
+                      >
+                        {expenseNotesOptions.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    ) : (
+                      <TextField
+                        id="notes_field"
+                        multiline
+                        rows={4}
+                        placeholder="Notes"
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        style={{ width: "100%", resize: "vertical" }}
+                      />
+                    )}
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    disabled={loading}
+                    sx={{ mt: 3 }}
+                  >
+                    Transact
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+          </Box>
+        </Grid>
+      </Grid>
     </Fragment>
   );
 };

@@ -11,6 +11,7 @@ import {
   getAdminAtm,
 } from "../../actions/atmActions";
 import { WITHDRAW_ATM_RESET } from "../../constants/atmConstants";
+import { Box, Grid, TextField, Typography, Button, Paper } from "@mui/material";
 
 const WithdrawForm = () => {
   const [amount, setAmount] = useState(0);
@@ -24,19 +25,6 @@ const WithdrawForm = () => {
     toast.success(message, {
       position: toast.POSITION.BOTTOM_CENTER,
     });
-
-  // useEffect(() => {
-  //   if (error) {
-  //     toast.error(error);
-  //     dispatch(clearErrors());
-  //   }
-
-  //   if (success) {
-  //     navigate("/atm-list");
-  //     message("Withdrawal successful");
-  //     dispatch({ type: WITHDRAW_ATM_RESET });
-  //   }
-  // }, [dispatch, error, success, navigate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -57,7 +45,58 @@ const WithdrawForm = () => {
   return (
     <Fragment>
       <MetaData title={"Withdraw Money"} />
-      <div className="row">
+      <Grid container>
+        <Grid item xs={12} md={2}>
+          <Sidebar />
+        </Grid>
+        <Grid item xs={12} md={10}>
+          <Box
+            component={Paper}
+            elevation={3}
+            sx={{
+              mt: 5,
+              p: 4,
+              borderRadius: "16px",
+              mx: 2,
+              backgroundColor: "#fff",
+            }}
+          >
+            <Typography variant="h4" component="h1" gutterBottom>
+              Withdraw
+            </Typography>
+            <Box component="form" onSubmit={submitHandler}>
+              <TextField
+                label="Amount"
+                type="number"
+                fullWidth
+                value={amount}
+                onChange={(e) => setAmount(Number(e.target.value))}
+                variant="outlined"
+                margin="normal"
+                required
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                disabled={loading}
+                sx={{ mt: 3 }}
+              >
+                Withdraw
+              </Button>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </Fragment>
+  );
+};
+
+export default WithdrawForm;
+
+{
+  /* <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
         </div>
@@ -94,9 +133,5 @@ const WithdrawForm = () => {
             </div>
           </Fragment>
         </div>
-      </div>
-    </Fragment>
-  );
-};
-
-export default WithdrawForm;
+      </div> */
+}

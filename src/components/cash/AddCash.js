@@ -12,6 +12,7 @@ import {
   clearErrors,
 } from "../../actions/cashActions";
 import { ADD_CASH_RESET } from "../../constants/cashConstants";
+import { Box, Typography, Grid, TextField, Button, Paper } from "@mui/material";
 
 const AddCash = () => {
   const [amount, setAmount] = useState(0);
@@ -23,8 +24,9 @@ const AddCash = () => {
     error: addError,
     success,
   } = useSelector((state) => state.addAmount);
-  let { id } = useParams();
-  let navigate = useNavigate();
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const errMsg = (message = "") =>
     toast.error(message, {
       position: toast.POSITION.BOTTOM_CENTER,
@@ -34,14 +36,29 @@ const AddCash = () => {
       position: toast.POSITION.BOTTOM_CENTER,
     });
 
+  useEffect(() => {
+    if (error) {
+      errMsg(error);
+      dispatch(clearErrors());
+    }
+
+    if (addError) {
+      errMsg(addError);
+      dispatch(clearErrors());
+    }
+
+    if (success) {
+      successMsg("Cash added successfully!");
+      dispatch({ type: ADD_CASH_RESET });
+      navigate("/cash-list");
+    }
+  }, [dispatch, error, addError, success, navigate]);
+
   const submitHandler = (e) => {
     e.preventDefault();
     try {
       const amountNumber = parseFloat(amount);
       dispatch(addCashAmount(id, amountNumber));
-      navigate("/cash-list");
-      dispatch(getAdminCash());
-      successMsg("Cash added successfully!");
     } catch (error) {
       console.error("Error adding cash:", error);
     }
@@ -50,39 +67,50 @@ const AddCash = () => {
   return (
     <Fragment>
       <MetaData title={"Add Cash"} />
-      <div className="row">
-        <div className="col-12 col-md-2">
+      <Grid container>
+        <Grid item xs={12} md={2}>
           <Sidebar />
-        </div>
-        <div className="col-12 col-md-10">
-          <Fragment>
-            <div className="wrapper my-5">
-              <form className="shadow-lg" onSubmit={submitHandler}>
-                <h1 className="mb-4">Add Cash</h1>
-                <div className="form-group">
-                  <label htmlFor="amount_field">Amount</label>
-                  <input
-                    type="number"
-                    id="amount_field"
-                    className="form-control"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                  />
-                </div>
-
-                <button
-                  id="login_button"
-                  type="submit"
-                  className="btn btn-block py-3"
-                  disabled={loading ? true : false}
-                >
-                  ADD
-                </button>
-              </form>
-            </div>
-          </Fragment>
-        </div>
-      </div>
+        </Grid>
+        <Grid item xs={12} md={10}>
+          <Box
+            component={Paper}
+            elevation={3}
+            sx={{
+              mt: 5,
+              p: 4,
+              borderRadius: "16px",
+              mx: 2,
+              backgroundColor: "#fff",
+            }}
+          >
+            <Typography variant="h4" component="h1" gutterBottom>
+              Add Cash
+            </Typography>
+            <Box component="form" onSubmit={submitHandler}>
+              <TextField
+                label="Amount"
+                type="number"
+                fullWidth
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                variant="outlined"
+                margin="normal"
+                required
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                disabled={loading}
+                sx={{ mt: 3 }}
+              >
+                ADD
+              </Button>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
     </Fragment>
   );
 };

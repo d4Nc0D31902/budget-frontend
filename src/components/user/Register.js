@@ -1,162 +1,310 @@
-import React, { Fragment, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import MetaData from '../layout/MetaData'
-
-// import { useAlert } from 'react-alert'
-import { useDispatch, useSelector } from 'react-redux'
-import { register, clearErrors } from '../../actions/userActions'
-
+import React, { Fragment, useState, useEffect } from "react";
+import {
+  Link as RouterLink,
+  useNavigate,
+  useLocation,
+  Link,
+} from "react-router-dom";
+import MetaData from "../layout/MetaData";
+import GoogleIcon from "@mui/icons-material/Google";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import { useDispatch, useSelector } from "react-redux";
+import { register, clearErrors } from "../../actions/userActions";
+import {
+  Avatar,
+  Box,
+  Container,
+  TextField,
+  Typography,
+  Button,
+  Divider,
+  Stack,
+} from "@mui/material";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 const Register = () => {
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-    const [user, setUser] = useState({
-        name: '',
-        email: '',
-        password: '',
-    })
+  const { name, email, password } = user;
 
-    const { name, email, password } = user;
+  const [avatar, setAvatar] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState(
+    "/images/default_avatar.jpg"
+  );
 
-    const [avatar, setAvatar] = useState('')
-    const [avatarPreview, setAvatarPreview] = useState('/images/default_avatar.jpg')
+  // const alert = useAlert();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    // const alert = useAlert();
-    const dispatch = useDispatch();
-    const navigate = useNavigate()
+  const { isAuthenticated, error, loading } = useSelector(
+    (state) => state.auth
+  );
 
-    const { isAuthenticated, error, loading } = useSelector(state => state.auth);
-
-    useEffect(() => {
-
-        if (isAuthenticated) {
-            navigate('/')
-        }
-
-        if (error) {
-            // alert.error(error);
-            dispatch(clearErrors());
-        }
-
-    }, [dispatch, isAuthenticated, error, navigate])
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-
-        const formData = new FormData();
-        formData.set('name', name);
-        formData.set('email', email);
-        formData.set('password', password);
-        formData.set('avatar', avatar);
-
-        dispatch(register(formData))
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
     }
 
-    const onChange = e => {
-        if (e.target.name === 'avatar') {
-
-            const reader = new FileReader();
-
-            reader.onload = () => {
-                if (reader.readyState === 2) {
-                    setAvatarPreview(reader.result)
-                    setAvatar(reader.result)
-                }
-            }
-
-            reader.readAsDataURL(e.target.files[0])
-
-        } else {
-            setUser({ ...user, [e.target.name]: e.target.value })
-        }
+    if (error) {
+      // alert.error(error);
+      dispatch(clearErrors());
     }
+  }, [dispatch, isAuthenticated, error, navigate]);
 
-    return (
-        <Fragment>
+  const submitHandler = (e) => {
+    e.preventDefault();
 
-            <MetaData title={'Register User'} />
+    const formData = new FormData();
+    formData.set("name", name);
+    formData.set("email", email);
+    formData.set("password", password);
+    formData.set("avatar", avatar);
 
-            <div className="row wrapper">
-                <div className="col-10 col-lg-5">
-                    <form className="shadow-lg" onSubmit={submitHandler} encType='multipart/form-data'>
-                        <h1 className="mb-3">Register</h1>
+    dispatch(register(formData));
+  };
 
-                        <div className="form-group">
-                            <label htmlFor="email_field">Name</label>
-                            <input
-                                type="name"
-                                id="name_field"
-                                className="form-control"
-                                name='name'
-                                value={name}
-                                onChange={onChange}
-                            />
-                        </div>
+  const onChange = (e) => {
+    if (e.target.name === "avatar") {
+      const reader = new FileReader();
 
-                        <div className="form-group">
-                            <label htmlFor="email_field">Email</label>
-                            <input
-                                type="email"
-                                id="email_field"
-                                className="form-control"
-                                name='email'
-                                value={email}
-                                onChange={onChange}
-                            />
-                        </div>
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setAvatarPreview(reader.result);
+          setAvatar(reader.result);
+        }
+      };
 
-                        <div className="form-group">
-                            <label htmlFor="password_field">Password</label>
-                            <input
-                                type="password"
-                                id="password_field"
-                                className="form-control"
-                                name='password'
-                                value={password}
-                                onChange={onChange}
-                            />
-                        </div>
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setUser({ ...user, [e.target.name]: e.target.value });
+    }
+  };
 
-                        <div className='form-group'>
-                            <label htmlFor='avatar_upload'>Avatar</label>
-                            <div className='d-flex align-items-center'>
-                                <div>
-                                    <figure className='avatar mr-3 item-rtl'>
-                                        <img
-                                            src={avatarPreview}
-                                            className='rounded-circle'
-                                            alt='Avatar Preview'
-                                        />
-                                    </figure>
-                                </div>
-                                <div className='custom-file'>
-                                    <input
-                                        type='file'
-                                        name='avatar'
-                                        className='custom-file-input'
-                                        id='customFile'
-                                        accept="images/*"
-                                        onChange={onChange}
-                                    />
-                                    <label className='custom-file-label' htmlFor='customFile'>
-                                        Choose Avatar
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+  return (
+    <Fragment>
+      <MetaData title={"Register User"} />
+      <Container maxWidth="sm" sx={{ height: "100vh" }}>
+        <Box
+          component="form"
+          onSubmit={submitHandler}
+          sx={{
+            boxShadow: 3,
+            p: 4,
+            borderRadius: "20px",
+            backgroundColor: "#fff",
+            mt: 3,
+          }}
+        >
+          <Typography
+            variant="h3"
+            // component="h1"
+            gutterBottom
+            textAlign={"center"}
+          >
+            Register
+          </Typography>
 
-                        <button
-                            id="register_button"
-                            type="submit"
-                            className="btn btn-block py-3"
-                            disabled={loading ? true : false}
-                        >
-                            REGISTER
-                        </button>
-                    </form>
-                </div>
-            </div>
+          <TextField
+            fullWidth
+            variant="outlined"
+            label="Name"
+            type="text"
+            name="name"
+            value={name}
+            onChange={onChange}
+            sx={{ marginBottom: "10px" }}
+            required
+          />
 
-        </Fragment>
-    )
-}
+          <TextField
+            fullWidth
+            variant="outlined"
+            label="Email"
+            type="email"
+            name="email"
+            value={email}
+            onChange={onChange}
+            sx={{ marginBottom: "10px" }}
+            required
+          />
 
-export default Register
+          <TextField
+            fullWidth
+            variant="outlined"
+            label="Password"
+            type="password"
+            name="password"
+            value={password}
+            sx={{ marginBottom: "10px" }}
+            onChange={onChange}
+            required
+          />
+
+          <Box
+            sx={{
+              marginTop: "10px",
+              marginBottom: "20px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Avatar
+                alt="Avatar Preview"
+                src={avatarPreview}
+                sx={{ width: 100, height: 100, mr: 2 }}
+              />
+              <Button
+                variant="contained"
+                component="label"
+                startIcon={<CameraAltIcon />}
+              >
+                Upload Avatar
+                <input
+                  type="file"
+                  name="avatar"
+                  accept="images/*"
+                  onChange={onChange}
+                  hidden
+                />
+              </Button>
+            </Box>
+          </Box>
+
+          <Button variant="contained" fullWidth>
+            Register
+          </Button>
+
+          <Box sx={{ display: "flex", mt: 2, justifyContent: "center", mb: 2 }}>
+            <Typography>Already have an account?</Typography>
+            <Link
+              component={RouterLink}
+              to="/login"
+              sx={{ ml: "2px", textDecoration: "none" }}
+            >
+              Login
+            </Link>
+          </Box>
+          <Divider sx={{ mb: "5px" }}>Or</Divider>
+
+          <Stack gap={2}>
+            <Button
+              variant="contained"
+              startIcon={<GoogleIcon />}
+              sx={{
+                margin: "2px",
+                backgroundColor: "white",
+                color: "black",
+              }}
+            >
+              Sign In with Google
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<FacebookIcon />}
+              sx={{ margin: "2px" }}
+            >
+              Sign In with Facebook
+            </Button>
+          </Stack>
+        </Box>
+      </Container>
+    </Fragment>
+  );
+};
+
+export default Register;
+
+// return (
+//     <Fragment>
+//       <MetaData title={"Register User"} />
+
+//       <div className="row wrapper">
+//         <div className="col-10 col-lg-5">
+//           <form
+//             className="shadow-lg"
+//             onSubmit={submitHandler}
+//             encType="multipart/form-data"
+//           >
+//             <h1 className="mb-3">Register</h1>
+
+//             <div className="form-group">
+//               <label htmlFor="email_field">Name</label>
+//               <input
+//                 type="name"
+//                 id="name_field"
+//                 className="form-control"
+//                 name="name"
+//                 value={name}
+//                 onChange={onChange}
+//               />
+//             </div>
+
+//             <div className="form-group">
+//               <label htmlFor="email_field">Email</label>
+//               <input
+//                 type="email"
+//                 id="email_field"
+//                 className="form-control"
+//                 name="email"
+//                 value={email}
+//                 onChange={onChange}
+//               />
+//             </div>
+
+//             <div className="form-group">
+//               <label htmlFor="password_field">Password</label>
+//               <input
+//                 type="password"
+//                 id="password_field"
+//                 className="form-control"
+//                 name="password"
+//                 value={password}
+//                 onChange={onChange}
+//               />
+//             </div>
+
+//             <div className="form-group">
+//               <label htmlFor="avatar_upload">Avatar</label>
+//               <div className="d-flex align-items-center">
+//                 <div>
+//                   <figure className="avatar mr-3 item-rtl">
+//                     <img
+//                       src={avatarPreview}
+//                       className="rounded-circle"
+//                       alt="Avatar Preview"
+//                     />
+//                   </figure>
+//                 </div>
+//                 <div className="custom-file">
+//                   <input
+//                     type="file"
+//                     name="avatar"
+//                     className="custom-file-input"
+//                     id="customFile"
+//                     accept="images/*"
+//                     onChange={onChange}
+//                   />
+//                   <label className="custom-file-label" htmlFor="customFile">
+//                     Choose Avatar
+//                   </label>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <button
+//               id="register_button"
+//               type="submit"
+//               className="btn btn-block py-3"
+//               disabled={loading ? true : false}
+//             >
+//               REGISTER
+//             </button>
+//           </form>
+//         </div>
+//       </div>
+//     </Fragment>
+//   );
