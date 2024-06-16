@@ -72,7 +72,7 @@ const NewTransaction = () => {
       await dispatch(processTransaction(transactionData));
       navigate("/transaction-list");
       dispatch(getAllTransactions());
-      successMsg("Transaction Deleted Successfully");
+      successMsg("Transaction Success!");
     } catch (error) {
       errMsg("Error Deleting Transaction!");
     }
@@ -171,10 +171,13 @@ const NewTransaction = () => {
                         onChange={(e) => setNotes(e.target.value)}
                         fullWidth
                       >
-                        <MenuItem value="">Select an Expense</MenuItem>
-                        {categories.map((cat) => (
-                          <MenuItem key={cat._id} value={cat._id}>
-                            {cat.description}
+                        <MenuItem value="">Select an Expense</MenuItem>{" "}
+                        {categories.map((category) => (
+                          <MenuItem
+                            key={category._id}
+                            value={category.description}
+                          >
+                            {category.description}
                           </MenuItem>
                         ))}
                       </Select>
