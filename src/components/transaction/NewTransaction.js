@@ -10,6 +10,7 @@ import {
   clearErrors,
   getAllTransactions,
 } from "../../actions/transactionActions";
+import { getAdminCategory } from "../../actions/categoryActions";
 import { PROCESS_TRANSACTION_RESET } from "../../constants/transactionConstants";
 import {
   Box,
@@ -31,11 +32,17 @@ const NewTransaction = () => {
   const [category, setCategory] = useState("");
   const [notes, setNotes] = useState("");
   const [date, setDate] = useState("");
+  const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const { loading, error, success } = useSelector(
     (state) => state.processTransaction
   );
+
+  useEffect(() => {
+    console.log("Fetching admin categories...");
+    dispatch(getAdminCategory());
+  }, [dispatch]);
 
   const errMsg = (message = "") =>
     toast.error(message, {
@@ -81,21 +88,6 @@ const NewTransaction = () => {
     { value: "", label: "Select Category" },
     { value: "Expenses", label: "Expenses" },
     { value: "Savings", label: "Savings" },
-  ];
-
-  const expenseNotesOptions = [
-    { value: "", label: "Select Note" },
-    { value: "Rent", label: "Rent" },
-    { value: "Utilities", label: "Utilities" },
-    { value: "Groceries", label: "Groceries" },
-    { value: "Food", label: "Food" },
-    { value: "Toys", label: "Toys" },
-    { value: "Loans", label: "Loans" },
-    { value: "Family", label: "Family" },
-    { value: "Bills", label: "Bills" },
-    { value: "Tax", label: "Tax" },
-    { value: "Transportation", label: "Transportation" },
-    { value: "Others", label: "Others" },
   ];
 
   return (
@@ -171,17 +163,18 @@ const NewTransaction = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
-                    {/* <InputLabel htmlFor="notes_field">Notes</InputLabel> */}
                     {category === "Expenses" ? (
                       <Select
+                        labelId="notes-label"
+                        id="notes"
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
-                        // label="Notes"
                         fullWidth
                       >
-                        {expenseNotesOptions.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
+                        <MenuItem value="">Select an Expense</MenuItem>
+                        {categories.map((cat) => (
+                          <MenuItem key={cat._id} value={cat._id}>
+                            {cat.description}
                           </MenuItem>
                         ))}
                       </Select>

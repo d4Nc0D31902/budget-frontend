@@ -17,7 +17,8 @@ import PaidIcon from "@mui/icons-material/Paid";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PieChartIcon from "@mui/icons-material/PieChart";
-import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
+import ReceiptLongRoundedIcon from "@mui/icons-material/ReceiptLongRounded";
+import CategoryIcon from '@mui/icons-material/Category';
 import axios from "axios";
 import {
   Box,
@@ -35,6 +36,7 @@ const Sidebar = () => {
   const [transactionOpen, setTransactionOpen] = useState(false);
   const [cashCount, setCashCount] = useState(0);
   const [atmCount, setAtmCount] = useState(0);
+  const [categoryOpen, setCategoryOpen] = useState(false);
   const location = useLocation();
 
   const handleCollapse = () => {
@@ -47,6 +49,10 @@ const Sidebar = () => {
 
   const handleTransactionOpen = () => {
     setTransactionOpen(!transactionOpen);
+  };
+
+  const handleCategoryOpen = () => {
+    setCategoryOpen(!categoryOpen);
   };
 
   const isActive = (path) => {
@@ -110,6 +116,43 @@ const Sidebar = () => {
           </ListItemIcon>
           <ListItemText primary="Analytics" />
         </ListItemButton>
+
+        <ListItemButton onClick={handleCategoryOpen}>
+          <ListItemIcon>
+            <CategoryIcon />
+          </ListItemIcon>
+          <ListItemText primary="Category" />
+          {categoryOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </ListItemButton>
+
+        <Collapse in={categoryOpen} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton
+              button
+              component={Link}
+              to="/category-list"
+              selected={isActive("/category-list")}
+              sx={{ marginLeft: "20px" }}
+            >
+              <ListItemIcon>
+                <TableChartIcon />
+              </ListItemIcon>
+              <ListItemText primary="Categories" />
+            </ListItemButton>
+            <ListItemButton
+              button
+              component={Link}
+              to="/category/new"
+              selected={isActive("/category/new")}
+              sx={{ marginLeft: "20px" }}
+            >
+              <ListItemIcon>
+                <AddIcon />
+              </ListItemIcon>
+              <ListItemText primary="New" />
+            </ListItemButton>
+          </List>
+        </Collapse>
 
         <ListItemButton onClick={handleCollapse}>
           <ListItemIcon>

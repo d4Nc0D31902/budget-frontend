@@ -58,6 +58,10 @@ import NewSavings from "./components/savings/UpdateSavings";
 import TransactionList from "./components/transaction/TransactionList";
 import NewTransaction from "./components/transaction/NewTransaction";
 
+import CategoryList from "./components/admin/CategoryList";
+import NewCategory from "./components/admin/NewCategory";
+import UpdateCategory from "./components/admin/UpdateCategory";
+
 import { loadUser } from "./actions/userActions";
 import { useSelector } from "react-redux";
 import store from "./store";
@@ -402,6 +406,33 @@ function App() {
           element={
             <ProtectedRoute>
               <WithdrawForm />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/category-list"
+          element={
+            <ProtectedRoute>
+              <CategoryList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/category/new"
+          element={
+            <ProtectedRoute>
+              <NewCategory />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/category/:id/update"
+          element={
+            <ProtectedRoute>
+              <UpdateCategory />
             </ProtectedRoute>
           }
         />

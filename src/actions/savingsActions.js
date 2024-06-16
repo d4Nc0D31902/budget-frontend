@@ -50,7 +50,7 @@ export const getAdminSavings = () => async (dispatch) => {
         withCredentials: true,
       }
     );
-    console.log("Data received from server:", data); // Log data here
+    console.log("Data received from server:", data); 
     dispatch({
       type: ADMIN_SAVINGS_SUCCESS,
       payload: data.savingsEntries,

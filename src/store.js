@@ -93,6 +93,13 @@ import {
   processTransactionReducer,
 } from "./reducers/transactionReducers";
 
+import {
+  categoriesReducer,
+  newCategoryReducer,
+  categoryDetailsReducer,
+  categoryReducer,
+} from "./reducers/categoryReducers";
+
 const reducer = combineReducers({
   products: productsReducer,
   productDetails: productDetailsReducer,
@@ -151,6 +158,10 @@ const reducer = combineReducers({
   atmAmount: atmAmountReducer,
   addAmount: addAmountReducer,
   expensesPerMonth: expensesPerMonthReducer,
+  categories: categoriesReducer,
+  newCategory: newCategoryReducer,
+  categoryDetails: categoryDetailsReducer,
+  category: categoryReducer,
 });
 
 let initialState = {
