@@ -162,7 +162,7 @@ const Register = () => {
                 component="label"
                 startIcon={<CameraAltIcon />}
               >
-                Upload Avatar
+                Upload Image
                 <input
                   type="file"
                   name="avatar"
