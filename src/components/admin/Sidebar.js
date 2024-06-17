@@ -20,6 +20,7 @@ import PieChartIcon from "@mui/icons-material/PieChart";
 import ReceiptLongRoundedIcon from "@mui/icons-material/ReceiptLongRounded";
 import CategoryIcon from "@mui/icons-material/Category";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import CalculateIcon from '@mui/icons-material/Calculate';
 import axios from "axios";
 import {
   Box,
@@ -354,6 +355,17 @@ const Sidebar = () => {
             </ListItemButton>
           </List>
         </Collapse>
+
+        <ListItemButton
+          component={Link}
+          to="/calculator"
+          selected={isActive("/calculator")}
+        >
+          <ListItemIcon>
+            <CalculateIcon />
+          </ListItemIcon>
+          <ListItemText primary="Calculator" />
+        </ListItemButton>
       </List>
     </Drawer>
   );

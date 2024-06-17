@@ -66,6 +66,8 @@ import BudgetList from "./components/budget/BudgetList";
 import NewBudget from "./components/budget/NewBudget";
 import UpdateBudget from "./components/budget/UpdateBudget";
 
+import Calculator from "./components/admin/Calculator";
+
 import { loadUser } from "./actions/userActions";
 import { useSelector } from "react-redux";
 import store from "./store";
@@ -463,6 +465,15 @@ function App() {
           element={
             <ProtectedRoute>
               <UpdateBudget />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/calculator"
+          element={
+            <ProtectedRoute>
+              <Calculator />
             </ProtectedRoute>
           }
         />
