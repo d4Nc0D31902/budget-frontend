@@ -40,6 +40,62 @@ const ExpensesList = () => {
     }
   }, [dispatch, error, navigate, isDeleted, deleteError]);
 
+  // const setExpenses = () => {
+  //   const data = {
+  //     columns: [
+  //       {
+  //         label: "Description",
+  //         field: "description",
+  //         sort: "asc",
+  //       },
+  //       {
+  //         label: "Amount",
+  //         field: "amount",
+  //         sort: "asc",
+  //       },
+  //       {
+  //         label: "Date",
+  //         field: "date",
+  //         sort: "asc",
+  //       },
+  //       {
+  //         label: "Actions",
+  //         field: "actions",
+  //       },
+  //     ],
+  //     rows: [],
+  //   };
+
+  //   if (expensesEntries) {
+  //     expensesEntries.forEach((expense) => {
+  //       data.rows.push({
+  //         id: expense._id,
+  //         description: expense.description,
+  //         amount: `₱${expense.amount}`,
+  //         date: new Date(expense.date).toLocaleDateString(),
+  //         actions: (
+  //           <Fragment>
+  //             <Link
+  //               to={`/expenses/${expense._id}/update`}
+  //               className="btn btn-primary py-1 px-2"
+  //             >
+  //               <i className="fa fa-pencil"></i>
+  //             </Link>
+  //             <button
+  //               className="btn btn-danger py-1 px-2 ml-2"
+  //               onClick={() => deleteExpensesHandler(expense._id)}
+  //             >
+  //               <i className="fa fa-trash"></i>
+  //             </button>
+  //           </Fragment>
+  //         ),
+  //       });
+  //     });
+  //   }
+
+  //   return data;
+  // };
+
   const setExpenses = () => {
     const data = {
       columns: [
@@ -66,32 +122,28 @@ const ExpensesList = () => {
       rows: [],
     };
 
-    if (expensesEntries) {
-      expensesEntries.forEach((expense) => {
-        data.rows.push({
-          id: expense._id,
-          description: expense.description,
-          amount: `₱${expense.amount}`,
-          date: new Date(expense.date).toLocaleDateString(),
-          actions: (
-            <Fragment>
-              <Link
-                to={`/expenses/${expense._id}/update`}
-                className="btn btn-primary py-1 px-2"
-              >
-                <i className="fa fa-pencil"></i>
-              </Link>
-              <button
-                className="btn btn-danger py-1 px-2 ml-2"
-                onClick={() => deleteExpensesHandler(expense._id)}
-              >
-                <i className="fa fa-trash"></i>
-              </button>
-            </Fragment>
-          ),
-        });
+    const sortedExpenses = expensesEntries
+      .slice()
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    sortedExpenses.forEach((expense) => {
+      data.rows.push({
+        id: expense._id,
+        description: expense.description,
+        amount: `₱${expense.amount}`,
+        date: new Date(expense.date).toLocaleDateString(),
+        actions: (
+          <Fragment>
+            <button
+              className="btn btn-danger py-1 px-2 ml-2"
+              onClick={() => deleteExpensesHandler(expense._id)}
+            >
+              <i className="fa fa-trash"></i>
+            </button>
+          </Fragment>
+        ),
       });
-    }
+    });
 
     return data;
   };

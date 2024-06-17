@@ -66,32 +66,28 @@ const SavingsList = () => {
       rows: [],
     };
 
-    if (savingsEntries) {
-      savingsEntries.forEach((saving) => {
-        data.rows.push({
-          id: saving._id,
-          description: saving.description,
-          amount: `₱${saving.amount}`,
-          date: new Date(saving.date).toLocaleDateString(),
-          actions: (
-            <Fragment>
-              <Link
-                to={`/savings/${saving._id}/update`}
-                className="btn btn-primary py-1 px-2"
-              >
-                <i className="fa fa-pencil"></i>
-              </Link>
-              <button
-                className="btn btn-danger py-1 px-2 ml-2"
-                onClick={() => deleteSavingsHandler(saving._id)}
-              >
-                <i className="fa fa-trash"></i>
-              </button>
-            </Fragment>
-          ),
-        });
+    const sortedSavingsEntries = savingsEntries
+      .slice()
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    sortedSavingsEntries.forEach((saving) => {
+      data.rows.push({
+        id: saving._id,
+        description: saving.description,
+        amount: `₱${saving.amount}`,
+        date: new Date(saving.date).toLocaleDateString(),
+        actions: (
+          <Fragment>
+            <button
+              className="btn btn-danger py-1 px-2 ml-2"
+              onClick={() => deleteSavingsHandler(saving._id)}
+            >
+              <i className="fa fa-trash"></i>
+            </button>
+          </Fragment>
+        ),
       });
-    }
+    });
 
     return data;
   };

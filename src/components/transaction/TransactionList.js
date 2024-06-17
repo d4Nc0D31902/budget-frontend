@@ -78,42 +78,24 @@ const TransactionList = () => {
           field: "date",
           sort: "asc",
         },
-        {
-          label: "Actions",
-          field: "actions",
-        },
       ],
       rows: [],
     };
 
-    if (transactions) {
-      transactions.forEach((transaction) => {
-        data.rows.push({
-          id: transaction._id,
-          account: transaction.account,
-          amount: `₱${transaction.amount}`,
-          category: transaction.category,
-          notes: transaction.notes,
-          date: new Date(transaction.date).toLocaleDateString(),
-          actions: (
-            <Fragment>
-              <Link
-                to={`/transaction/${transaction._id}/update`}
-                className="btn btn-primary py-1 px-2"
-              >
-                <i className="fa fa-pencil"></i>
-              </Link>
-              <button
-                className="btn btn-danger py-1 px-2 ml-2"
-                onClick={() => deleteTransactionHandler(transaction._id)}
-              >
-                <i className="fa fa-trash"></i>
-              </button>
-            </Fragment>
-          ),
-        });
+    const sortedTransactions = transactions
+      .slice()
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    sortedTransactions.forEach((transaction) => {
+      data.rows.push({
+        id: transaction._id,
+        account: transaction.account,
+        amount: `₱${transaction.amount}`,
+        category: transaction.category,
+        notes: transaction.notes,
+        date: new Date(transaction.date).toLocaleDateString(),
       });
-    }
+    });
 
     return data;
   };

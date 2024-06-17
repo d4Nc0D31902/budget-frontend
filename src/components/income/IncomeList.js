@@ -66,34 +66,30 @@ const IncomeList = () => {
       rows: [],
     };
 
-    if (incomeEntries) {
-      incomeEntries.forEach((income) => {
-        data.rows.push({
-          id: income._id,
-          description: income.description,
-          amount: `₱${income.amount
-            .toFixed(2)
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
-          date: new Date(income.date).toLocaleDateString(),
-          actions: (
-            <Fragment>
-              <Link
-                to={`/income/${income._id}/update`}
-                className="btn btn-primary py-1 px-2"
-              >
-                <i className="fa fa-pencil"></i>
-              </Link>
-              <button
-                className="btn btn-danger py-1 px-2 ml-2"
-                onClick={() => deleteIncomeHandler(income._id)}
-              >
-                <i className="fa fa-trash"></i>
-              </button>
-            </Fragment>
-          ),
-        });
+    const sortedIncomeEntries = incomeEntries
+      .slice()
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    sortedIncomeEntries.forEach((income) => {
+      data.rows.push({
+        id: income._id,
+        description: income.description,
+        amount: `₱${income.amount
+          .toFixed(2)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+        date: new Date(income.date).toLocaleDateString(),
+        actions: (
+          <Fragment>
+            <button
+              className="btn btn-danger py-1 px-2 ml-2"
+              onClick={() => deleteIncomeHandler(income._id)}
+            >
+              <i className="fa fa-trash"></i>
+            </button>
+          </Fragment>
+        ),
       });
-    }
+    });
 
     return data;
   };
