@@ -69,9 +69,13 @@ const CashList = () => {
         data.rows.push({
           id: cash._id,
           description: cash.description,
-          amount: `₱${cash.amount
-            .toFixed(2)
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+          // amount: `₱${cash.amount
+          //   .toFixed(2)
+          //   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+          amount: `₱${parseFloat(cash.amount).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}`,
           date: new Date(cash.date).toLocaleDateString(),
           // date: cash.date,
           actions: (

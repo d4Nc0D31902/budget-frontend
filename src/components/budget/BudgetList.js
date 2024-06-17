@@ -60,9 +60,13 @@ const BudgetList = () => {
         data.rows.push({
           id: budget._id,
           description: budget.description,
-          amount: `₱${budget.amount
-            .toFixed(2)
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+          // amount: `₱${budget.amount
+          //   .toFixed(2)
+          //   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+          amount: `₱${parseFloat(budget.amount).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}`,
           actions: (
             <Fragment>
               <Link

@@ -130,7 +130,11 @@ const ExpensesList = () => {
       data.rows.push({
         id: expense._id,
         description: expense.description,
-        amount: `₱${expense.amount}`,
+        // amount: `₱${expense.amount}`,
+        amount: `₱${parseFloat(expense.amount).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
         date: new Date(expense.date).toLocaleDateString(),
         actions: (
           <Fragment>

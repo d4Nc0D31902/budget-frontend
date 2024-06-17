@@ -90,7 +90,11 @@ const TransactionList = () => {
       data.rows.push({
         id: transaction._id,
         account: transaction.account,
-        amount: `₱${transaction.amount}`,
+        // amount: `₱${transaction.amount}`,
+        amount: `₱${parseFloat(transaction.amount).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
         category: transaction.category,
         notes: transaction.notes,
         date: new Date(transaction.date).toLocaleDateString(),

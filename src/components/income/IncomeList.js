@@ -74,9 +74,13 @@ const IncomeList = () => {
       data.rows.push({
         id: income._id,
         description: income.description,
-        amount: `₱${income.amount
-          .toFixed(2)
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+        // amount: `₱${income.amount
+        //   .toFixed(2)
+        //   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+        amount: `₱${parseFloat(income.amount).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
         date: new Date(income.date).toLocaleDateString(),
         actions: (
           <Fragment>

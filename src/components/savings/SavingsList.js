@@ -74,7 +74,11 @@ const SavingsList = () => {
       data.rows.push({
         id: saving._id,
         description: saving.description,
-        amount: `₱${saving.amount}`,
+        // amount: `₱${saving.amount}`,
+        amount: `₱${parseFloat(saving.amount).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
         date: new Date(saving.date).toLocaleDateString(),
         actions: (
           <Fragment>
