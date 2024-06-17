@@ -107,7 +107,7 @@ const Sidebar = () => {
         <Box p={"5px"}>
           <Typography variant="h4" textAlign={"center"}>
             <img
-              src="../images/ba.png"
+              src="../images/BA.png"
               style={{
                 width: "70%",
                 borderRadius: "80px",

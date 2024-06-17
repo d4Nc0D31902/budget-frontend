@@ -1,17 +1,17 @@
-/node_modules/
-/frontend/node_modules/
+node_modules
+frontend/node_modules
 
 
 # production
-/frontend/build
+frontend/build
 
 # misc
-/backend/config/config.env
-/frontend/.env
-/frontend/.env.local
-/frontend/.env.development.local
-/frontend/.env.test.local
-/frontend/.env.production.local
+backend/config/.env
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
 
 *.env
 npm-debug.log*
