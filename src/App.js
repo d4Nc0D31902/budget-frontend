@@ -62,10 +62,13 @@ import CategoryList from "./components/admin/CategoryList";
 import NewCategory from "./components/admin/NewCategory";
 import UpdateCategory from "./components/admin/UpdateCategory";
 
+import BudgetList from "./components/budget/BudgetList";
+import NewBudget from "./components/budget/NewBudget";
+import UpdateBudget from "./components/budget/UpdateBudget";
+
 import { loadUser } from "./actions/userActions";
 import { useSelector } from "react-redux";
 import store from "./store";
-import Savings from "@mui/icons-material/Savings";
 
 function App() {
   useEffect(() => {
@@ -433,6 +436,33 @@ function App() {
           element={
             <ProtectedRoute>
               <UpdateCategory />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/budget-list"
+          element={
+            <ProtectedRoute>
+              <BudgetList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/budget/new"
+          element={
+            <ProtectedRoute>
+              <NewBudget />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/budget/:id/update"
+          element={
+            <ProtectedRoute>
+              <UpdateBudget />
             </ProtectedRoute>
           }
         />

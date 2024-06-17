@@ -12,6 +12,7 @@ import { getTotalCashAmount } from "../../actions/cashActions";
 import { getTotalSavings } from "../../actions/savingsActions";
 import { getTotalAtmAmount } from "../../actions/atmActions";
 import { getTotalIncome } from "../../actions/incomeActions";
+import { getAdminBudget } from "../../actions/budgetActions";
 import {
   getTotalExpenses,
   getAdminExpenses,
@@ -20,6 +21,15 @@ import {
   getIncomePerMonth,
   getExpensesPerMonth,
 } from "../../actions/chartActions";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -30,17 +40,22 @@ const Dashboard = () => {
   const { incomePerMonth } = useSelector((state) => state.incomePerMonth);
   const { expensesPerMonth } = useSelector((state) => state.expensesPerMonth);
   const { expensesEntries } = useSelector((state) => state.expensesEntries);
+  const { budgets } = useSelector((state) => state.budgets);
   const { totalExpenses, loading } = useSelector(
     (state) => state.totalExpenses
   );
 
-  // Calculate the total balance
   const totalBalance = (totalAmount ?? 0) + (totalAtm ?? 0);
 
-  // Format the total balance with commas and two decimal places
   const formattedTotalBalance = totalBalance
     .toFixed(2)
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  const rows = [
+    { id: 1, description: "Groceries", amount: 5000 },
+    { id: 2, description: "Utilities", amount: 2000 },
+    { id: 3, description: "Rent", amount: 10000 },
+  ];
 
   useEffect(() => {
     dispatch(getTotalCashAmount());
@@ -51,6 +66,7 @@ const Dashboard = () => {
     dispatch(getIncomePerMonth());
     dispatch(getExpensesPerMonth());
     dispatch(getAdminExpenses());
+    dispatch(getAdminBudget());
   }, [dispatch]);
 
   return (
@@ -113,7 +129,6 @@ const Dashboard = () => {
                               .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                         </b>
                       </div>
-                      {/*  */}
                     </div>
 
                     <Link
@@ -162,7 +177,7 @@ const Dashboard = () => {
                     <div className="card-body">
                       <div className="text-center card-font-size">
                         Total Income
-                        <br />{" "}
+                        <br />
                         <b>
                           ₱
                           {totalIncome &&
@@ -190,7 +205,7 @@ const Dashboard = () => {
                     <div className="card-body">
                       <div className="text-center card-font-size">
                         Total Expenses
-                        <br />{" "}
+                        <br />
                         <b>
                           ₱
                           {totalExpenses &&
@@ -213,9 +228,56 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-              {/* <Fragment>
-                <UserSalesChart data={incom} />
-              </Fragment> */}
+              <Fragment>
+                <h1
+                  style={{
+                    textAlign: "center",
+                    marginTop: "50px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  Budget List
+                </h1>
+                <TableContainer
+                  elevation={6}
+                  component={Paper}
+                  style={{
+                    width: "50%",
+                    margin: "auto",
+                    maxHeight: "400px",
+                    overflowY: "auto",
+                  }}
+                >
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell sx={{ fontWeight: "bold" }}>
+                          Description
+                        </TableCell>
+                        <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                          Amount
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {budgets.map((budgetItem) => (
+                        <TableRow key={budgetItem.id}>
+                          <TableCell component="th" scope="row">
+                            {budgetItem.description}
+                          </TableCell>
+                          <TableCell align="right">
+                            ₱
+                            {budgetItem.amount
+                              .toFixed(2)
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Fragment>
+
               <Fragment>
                 <h1 style={{ textAlign: "center", marginTop: "50px" }}>
                   Monthly Income

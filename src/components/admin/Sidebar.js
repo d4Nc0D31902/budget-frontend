@@ -18,7 +18,8 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PieChartIcon from "@mui/icons-material/PieChart";
 import ReceiptLongRoundedIcon from "@mui/icons-material/ReceiptLongRounded";
-import CategoryIcon from '@mui/icons-material/Category';
+import CategoryIcon from "@mui/icons-material/Category";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import axios from "axios";
 import {
   Box,
@@ -37,6 +38,7 @@ const Sidebar = () => {
   const [cashCount, setCashCount] = useState(0);
   const [atmCount, setAtmCount] = useState(0);
   const [categoryOpen, setCategoryOpen] = useState(false);
+  const [budgetOpen, setBudgetOpen] = useState(false);
   const location = useLocation();
 
   const handleCollapse = () => {
@@ -53,6 +55,10 @@ const Sidebar = () => {
 
   const handleCategoryOpen = () => {
     setCategoryOpen(!categoryOpen);
+  };
+
+  const handleBudgetOpen = () => {
+    setBudgetOpen(!budgetOpen);
   };
 
   const isActive = (path) => {
@@ -116,6 +122,43 @@ const Sidebar = () => {
           </ListItemIcon>
           <ListItemText primary="Analytics" />
         </ListItemButton>
+
+        <ListItemButton onClick={handleBudgetOpen}>
+          <ListItemIcon>
+            <AccountBalanceWalletIcon />
+          </ListItemIcon>
+          <ListItemText primary="Budget" />
+          {budgetOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </ListItemButton>
+
+        <Collapse in={budgetOpen} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton
+              button
+              component={Link}
+              to="/budget-list"
+              selected={isActive("/budget-list")}
+              sx={{ marginLeft: "20px" }}
+            >
+              <ListItemIcon>
+                <TableChartIcon />
+              </ListItemIcon>
+              <ListItemText primary="List" />
+            </ListItemButton>
+            <ListItemButton
+              button
+              component={Link}
+              to="/budget/new"
+              selected={isActive("/budget/new")}
+              sx={{ marginLeft: "20px" }}
+            >
+              <ListItemIcon>
+                <AddIcon />
+              </ListItemIcon>
+              <ListItemText primary="New" />
+            </ListItemButton>
+          </List>
+        </Collapse>
 
         <ListItemButton onClick={handleCategoryOpen}>
           <ListItemIcon>
@@ -244,17 +287,6 @@ const Sidebar = () => {
 
         <ListItemButton
           component={Link}
-          to="/income-list"
-          selected={isActive("/income-list")}
-        >
-          <ListItemIcon>
-            <PaidIcon />
-          </ListItemIcon>
-          <ListItemText primary="Income" />
-        </ListItemButton>
-
-        <ListItemButton
-          component={Link}
           to="/expenses-list"
           selected={isActive("/expenses-list")}
         >
@@ -262,6 +294,17 @@ const Sidebar = () => {
             <ShoppingCartIcon />
           </ListItemIcon>
           <ListItemText primary="Expenses" />
+        </ListItemButton>
+
+        <ListItemButton
+          component={Link}
+          to="/income-list"
+          selected={isActive("/income-list")}
+        >
+          <ListItemIcon>
+            <PaidIcon />
+          </ListItemIcon>
+          <ListItemText primary="Income" />
         </ListItemButton>
 
         <ListItemButton

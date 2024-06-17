@@ -100,6 +100,13 @@ import {
   categoryReducer,
 } from "./reducers/categoryReducers";
 
+import {
+  newBudgetReducer,
+  budgetDetailsReducer,
+  budgetReducer,
+  budgetsReducer,
+} from "./reducers/budgetReducers";
+
 const reducer = combineReducers({
   products: productsReducer,
   productDetails: productDetailsReducer,
@@ -162,6 +169,10 @@ const reducer = combineReducers({
   newCategory: newCategoryReducer,
   categoryDetails: categoryDetailsReducer,
   category: categoryReducer,
+  newBudget: newBudgetReducer,
+  budgetDetails: budgetDetailsReducer,
+  budget: budgetReducer,
+  budgets: budgetsReducer,
 });
 
 let initialState = {
