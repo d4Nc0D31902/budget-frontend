@@ -122,6 +122,7 @@ const NewTransaction = () => {
                       value={account}
                       onChange={(e) => setAccount(e.target.value)}
                       label="Account"
+                      required
                       fullWidth
                     >
                       {accountOptions.map((option) => (
@@ -151,6 +152,7 @@ const NewTransaction = () => {
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                       label="Category"
+                      required
                       fullWidth
                     >
                       {categoryOptions.map((option) => (
@@ -165,6 +167,7 @@ const NewTransaction = () => {
                   <FormControl fullWidth>
                     {category === "Expenses" ? (
                       <Select
+                        required
                         labelId="notes-label"
                         id="notes"
                         value={notes}
@@ -184,6 +187,7 @@ const NewTransaction = () => {
                     ) : (
                       <TextField
                         id="notes_field"
+                        required
                         multiline
                         rows={4}
                         placeholder="Notes"
